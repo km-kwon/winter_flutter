@@ -116,6 +116,7 @@ class App extends StatelessWidget {
                   amount: '6 428',
                   icon: Icons.euro_rounded,
                   Inverted: false,
+                  order: 1,
                 ),
                 Transform.translate(
                   offset: const Offset(0, -30),
@@ -125,6 +126,7 @@ class App extends StatelessWidget {
                     amount: '9 785',
                     icon: Icons.currency_bitcoin,
                     Inverted: true,
+                    order: 2,
                   ),
                 ),
                 Transform.translate(
@@ -135,6 +137,7 @@ class App extends StatelessWidget {
                     amount: '55 622',
                     icon: Icons.attach_money_outlined,
                     Inverted: false,
+                    order: 3,
                   ),
                 ),
               ],
