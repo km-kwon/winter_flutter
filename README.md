@@ -1,4 +1,12 @@
 # likelion_Wiki
+
+# 사용법
+  1) 터미널 창 띄우고 npm start (로컬 서버 실행)
+  2) 터미널 창 새로 띄우고 cd client  입력
+  3) client로 이동 후 npm start 
+  
+
+
 # 위키만들기
 ## 프론트 - 백
 - 프론트 권경민/정동구
