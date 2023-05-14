@@ -117,9 +117,9 @@ ul a {
 }
 
 .loginBtn {
+  cursor: pointer;
   display: flex;
   justify-content: end;
-  cursor: pointer;
 }
 
 .loginBtn a {
