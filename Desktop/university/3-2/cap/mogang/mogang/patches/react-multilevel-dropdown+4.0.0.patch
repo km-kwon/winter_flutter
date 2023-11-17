@@ -1,0 +1,26 @@
+diff --git a/node_modules/react-multilevel-dropdown/Dropdown.module.scss b/node_modules/react-multilevel-dropdown/Dropdown.module.scss
+index 42cc5a7..f433886 100644
+--- a/node_modules/react-multilevel-dropdown/Dropdown.module.scss
++++ b/node_modules/react-multilevel-dropdown/Dropdown.module.scss
+@@ -161,8 +161,8 @@
+ 
+   .menu {
+     position: absolute;
+-    top: calc(100% + 4px);
+-    right: 0;
++    top: calc(100% + 6px);
++    left: 0;
+     z-index: 1000;
+     flex-direction: column;
+     min-width: 180px;
+@@ -176,6 +176,10 @@
+       margin-top: 12px;
+       margin-bottom: 12px;
+     }
++    li{
++      margin: 0;
++      width: 100%;
++    }
+   }
+ 
+   .menu-left {

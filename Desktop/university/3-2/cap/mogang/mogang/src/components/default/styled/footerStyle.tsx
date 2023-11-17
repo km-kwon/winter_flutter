@@ -8,7 +8,7 @@ const FooterMain = styled.div`
   height: 20rem;
   background-color: #31373f;
   font-size: 1.2rem;
-  margin: 10rem 0 0 0;
+  margin: 6rem 0 0 0;
   p {
     font-weight: 600;
     color: white;

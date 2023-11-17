@@ -160,12 +160,6 @@ function MainBody() {
           </div>
           <div id="searchBtn">조회</div>
         </div>
-        <div className="popularLecture">
-          <p> 지금 인기있는 강의</p>
-          <div className="list">
-            <LectureList />
-          </div>
-        </div>
       </Body_main>
     </>
   );

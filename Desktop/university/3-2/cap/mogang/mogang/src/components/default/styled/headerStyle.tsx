@@ -1,6 +1,7 @@
 import styled from "styled-components";
+import Dropdown from "react-multilevel-dropdown";
 
-const HeaderMain = styled.div`
+export const HeaderMain = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -12,6 +13,7 @@ const HeaderMain = styled.div`
     align-items: center;
   }
   li {
+    margin-right: 2rem;
     font-weight: 600;
     font-size: 1.2rem;
   }
@@ -20,6 +22,7 @@ const HeaderMain = styled.div`
     height: 4rem;
     width: 7rem;
     margin: 0 0 0 3rem;
+    cursor: pointer;
   }
   .searchBar {
     display: flex;
@@ -30,7 +33,6 @@ const HeaderMain = styled.div`
     background-color: #f2f2f2;
     border-radius: 10px;
     font-size: 1rem;
-    margin-right: 2rem;
   }
   .searchBar input {
     margin: 0 0 0 0.3rem;
@@ -46,7 +48,7 @@ const HeaderMain = styled.div`
     outline: solid 2px black;
     border-radius: 5px;
     width: 3.5rem;
-    margin-right: 2rem;
+    cursor: pointer;
   }
   .signBtn {
     display: flex;
@@ -57,81 +59,47 @@ const HeaderMain = styled.div`
     outline: solid 2px #3499fd;
     color: #3499fd;
     border-radius: 5px;
+    cursor: pointer;
   }
-  a {
-    text-align: center;
-    text-decoration: none;
-    color: inherit;
-  }
-  .menu {
-    height: 2rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 8.5rem;
-    position: relative;
-  }
-  .sub-menu1 {
-    display: flex;
-    flex-direction: column;
-    color: #3499fd;
-    align-items: center;
-    position: absolute;
-    top: 3rem;
-    height: 20rem;
-    width: 100%;
-    background-color: white;
-    border: 0.5px solid gray;
-    border-radius: 0.3rem;
-    box-shadow: 17px 17px 20px -10px black;
-  }
-  .sub-menu1-list {
-    display: flex;
-    margin-top: 1rem;
-    color: gray;
-  }
-  .sub-menu1-list {
-    color: #3499fd;
-  }
-  .sub-menu2 {
-    display: flex;
-    flex-direction: column;
-    color: #3499fd;
-    align-items: center;
-    position: absolute;
-    left: 5.6rem;
-    top: -1px;
-    height: 20rem;
-    width: 8.5rem;
-    background-color: white;
-    border: 0.5px solid gray;
-    border-radius: 0.3rem;
-    box-shadow: 17px 17px 20px -10px black;
-  }
-  .sub-menu2-list {
-    display: flex;
-    justify-content: center;
-    margin-top: 1rem;
-  }
-  .sub-menu3 {
-    display: flex;
-    flex-direction: column;
-    color: #3499fd;
-    align-items: center;
-    position: absolute;
-    left: 7.4rem;
-    top: -1px;
-    height: 20rem;
-    width: 8.5rem;
-    background-color: white;
-    border: 0.5px solid gray;
-    border-radius: 0.3rem;
-    box-shadow: 17px 17px 20px -10px black;
-  }
-  .sub-menu3-list {
-    display: flex;
-    margin-top: 1rem;
+  .compare {
+    cursor: pointer;
   }
 `;
 
-export default HeaderMain;
+export const DropdownEdit = styled(Dropdown)`
+  cursor: pointer;
+  border: 0;
+  outline: 0;
+  background-color: transparent;
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-right: 2rem;
+`;
+export const DropdowonItemEdit = styled(Dropdown.Item)`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  li {
+    margin: 0;
+  }
+`;
+export const DropdownSubEdit = styled(Dropdown.Submenu)`
+  background-color: white;
+  left: 100%;
+  top: -13px;
+
+  ul {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  li {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 3rem;
+    padding: 0;
+  }
+`;
