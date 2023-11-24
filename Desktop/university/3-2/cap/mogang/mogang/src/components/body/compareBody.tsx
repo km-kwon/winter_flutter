@@ -1,33 +1,140 @@
 import Body_main from "./styled/compareBodyStyle";
-import LectureList from "./lecture/lectureCard";
 import { useState } from "react";
-import {
-  faV,
-  faChevronRight,
-  faChevronLeft,
-} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useParams } from "react-router";
+import { faCirclePlus, faX, faXmark } from "@fortawesome/free-solid-svg-icons";
+import Modal from "react-modal";
+import { faHeart as heartSolid } from "@fortawesome/free-solid-svg-icons";
 
 function MainBody() {
   const { index } = useParams();
-  const [isFirstOpen, setIsFirstOpen] = useState(true);
-  const [isSecondOpen, setIsSecondOpen] = useState(true);
-  const [categoryName, setCategoryName] = useState("카테고리");
-  const [detailCategoryName, setDetailCategoryName] = useState("세부 카테고리");
-  const [option, setOption] = useState(-1);
-  const [free, setFree] = useState(true);
+  const [checkDeleteOption, setCheckDeleteOption] = useState(false);
+  const list = ["권경민", "ㄼㅈ", "ㅁㅇㄴㄹ"];
 
-  const toggleMenu1 = () => {
-    setIsFirstOpen(!isFirstOpen);
-  };
+  const DeleteConfirmMessage = () => {
+    const customModalStyles2: ReactModal.Styles = {
+      overlay: {
+        backgroundColor: " rgba(0, 0, 0, 0.4)",
+        width: "100%",
+        height: "100vh",
+        zIndex: "10",
+        position: "fixed",
+        top: "0",
+        left: "0",
+      },
+      content: {
+        width: "20rem",
+        height: "30rem",
+        zIndex: "150",
+        position: "absolute",
+        top: "50%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
+        borderRadius: "10px",
+        boxShadow: "2px 2px 2px rgba(0, 0, 0, 0.25)",
+        backgroundColor: "white",
+        justifyContent: "center",
+        overflow: "auto",
+      },
+    };
 
-  const toggleMenu2 = () => {
-    if (categoryName === "카테고리") {
-    } else {
-      setIsSecondOpen(!isSecondOpen);
+    function handleChange(e: any) {
+      console.log(e.target.value);
     }
+
+    return (
+      <Modal
+        isOpen={checkDeleteOption}
+        onRequestClose={() => setCheckDeleteOption(false)}
+        ariaHideApp={false}
+        style={customModalStyles2}
+      >
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            fontSize: "1.3rem",
+            height: "100%",
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              width: "90%",
+              alignItems: "center",
+              margin: "2rem 0 2rem 0",
+            }}
+          >
+            <div>
+              <FontAwesomeIcon
+                style={{
+                  color: "#f97171",
+                  margin: "0 1rem 0 0",
+                }}
+                className="icon"
+                icon={heartSolid}
+              />
+              <span
+                style={{
+                  fontSize: "1rem",
+                  fontWeight: "600",
+                }}
+              >
+                내가 찜한 강의 목록
+              </span>
+            </div>
+            <FontAwesomeIcon
+              style={{
+                marginLeft: "auto",
+              }}
+              icon={faXmark}
+              className="X"
+              onClick={() => {
+                setCheckDeleteOption(false);
+              }}
+            />
+          </div>
+          <div
+            style={{
+              width: "100%",
+              display: "flex",
+              flexDirection: "column",
+            }}
+          >
+            {list.map((value, i) => {
+              return (
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    fontSize: "1.2rem",
+                    margin: "0 1rem 1rem 1rem",
+                  }}
+                >
+                  <input
+                    style={{
+                      height: "1.5rem",
+                      width: "2rem",
+                      accentColor: "skyblue",
+                      margin: "0 1rem 0 0",
+                    }}
+                    id={value}
+                    value={value}
+                    name="platform"
+                    type="radio"
+                    onChange={handleChange}
+                  />
+                  <span>{value}</span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </Modal>
+    );
   };
+
   return (
     <>
       <Body_main>
@@ -39,7 +146,7 @@ function MainBody() {
                 fontWeight: "600",
               }}
             >
-              강의 리스트
+              강의 알아보기
             </span>
             <span
               style={{
@@ -47,142 +154,56 @@ function MainBody() {
                 fontWeight: "500",
               }}
             >
-              한번의 모든 강의를 살펴봐요!
+              내가 선택한 강의와 비슷한 강의를 추천받아요!
             </span>
           </div>
         </div>
-        <div className="Row">
-          <div className="listDetail">
-            <div className="menu" onClick={toggleMenu1}>
-              <span>{categoryName}</span>
-              <FontAwesomeIcon icon={faV} />
-            </div>
-            <div className={` ${isFirstOpen ? "hidden" : "toggleMenu1"}`}>
-              <div
-                className={`${isFirstOpen ? "hidden" : "toggleMenuContainer"}`}
-                onClick={() => {
-                  setCategoryName("개발");
-                  setIsFirstOpen(!isFirstOpen);
-                }}
-              >
-                개발
-              </div>
-              <div
-                className={`${isFirstOpen ? "hidden" : "toggleMenuContainer"}`}
-              >
-                데이터 사이언스(준비 중)
-              </div>
-            </div>
-          </div>
-          <div className="listDetail">
-            <div className="menu" onClick={toggleMenu2}>
-              <span>{detailCategoryName}</span>
-              <FontAwesomeIcon icon={faV} />
-            </div>
-            <div className={` ${isSecondOpen ? "hidden" : "toggleMenu2"}`}>
-              <div
-                className={`${isSecondOpen ? "hidden" : "toggleMenuContainer"}`}
-                onClick={() => {
-                  setIsSecondOpen(!isSecondOpen);
-                  setDetailCategoryName("JavaScript");
-                }}
-              >
-                JavaScript
-              </div>
-              <div
-                className={`${isSecondOpen ? "hidden" : "toggleMenuContainer"}`}
-                onClick={() => {
-                  setIsSecondOpen(!isSecondOpen);
-                  setDetailCategoryName("ReactJS");
-                }}
-              >
-                ReactJS
-              </div>
-              <div
-                className={`${isSecondOpen ? "hidden" : "toggleMenuContainer"}`}
-                onClick={() => {
-                  setIsSecondOpen(!isSecondOpen);
-                  setDetailCategoryName(" Html/CSS");
-                }}
-              >
-                Html/CSS
-              </div>
-            </div>
-          </div>
+        <span className="subtitle">강의 비교하기</span>
 
-          <div className="detail">
-            <div
-              className={`${
-                option === 1 ? "detailCategory2" : "detailCategory1"
-              }`}
-              onClick={() => {
-                if (option !== 1) {
-                  setOption(1);
-                } else if (option === 1) {
-                  setOption(-1);
-                }
-              }}
-            >
-              입문
+        <div className="carsContainer">
+          <div className="card">
+            <div className="thumbnail">
+              <FontAwesomeIcon icon={faXmark} className="X" />
             </div>
-            <div
-              className={`${
-                option === 2 ? "detailCategory2" : "detailCategory1"
-              }`}
-              onClick={() => {
-                if (option !== 2) {
-                  setOption(2);
-                } else if (option === 2) {
-                  setOption(-1);
-                }
-              }}
-            >
-              초급
-            </div>
-            <div
-              className={`${
-                option === 3 ? "detailCategory2" : "detailCategory1"
-              }`}
-              onClick={() => {
-                if (option !== 3) {
-                  setOption(3);
-                } else if (option === 3) {
-                  setOption(-1);
-                }
-              }}
-            >
-              중급+
+            <div className="extra">
+              <div className="explain1">
+                <div>
+                  <span>강의명: </span>
+                  <span>9시간만에 끝내는 코드입니다...</span>
+                </div>
+                <span className="level">입문</span>
+              </div>
+              <div className="explain1">
+                <div>
+                  <span>키워드: </span>
+                  <span>javaScript</span>
+                </div>
+              </div>
+              <div className="explain1">
+                <div>
+                  <span>가격: </span>
+                  <span>무료</span>
+                </div>
+              </div>
+              <div className="explain2">
+                <div>요구사항</div>
+                <span>- javacript 관련 지식은 필요하지 않습니다.</span>
+                <span>- 기본 웹 개발 지식이 있으면 도움이 됩니다.</span>
+              </div>
             </div>
           </div>
-          <div
-            className={`${free ? "temp1" : "temp2"}`}
-            onClick={() => {
-              setFree(!free);
-            }}
-          >
-            무료 강의만
+          <div className="card">
+            <FontAwesomeIcon
+              onClick={() => {
+                setCheckDeleteOption(true);
+              }}
+              icon={faCirclePlus}
+              className="plus"
+            />
           </div>
         </div>
-        <div className="list">
-          <LectureList />
-        </div>
-        <div className="pageInfo">
-          <FontAwesomeIcon
-            icon={faChevronLeft}
-            style={{
-              fontSize: "1.5rem",
-              margin: "0 1rem 0 0",
-            }}
-          />
-          1 ~<div className="curPage">{index}</div> ~ 30
-          <FontAwesomeIcon
-            icon={faChevronRight}
-            style={{
-              fontSize: "1.5rem",
-              margin: "0 0 0 1rem",
-            }}
-          />
-        </div>
+
+        <DeleteConfirmMessage />
       </Body_main>
     </>
   );

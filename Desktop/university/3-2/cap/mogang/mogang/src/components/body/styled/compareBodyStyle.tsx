@@ -25,194 +25,101 @@ const Body_main = styled.div`
     display:flex;
     flex-direction: column;
   }
+.subtitle{
+  width: 880px;
+  margin: 2rem 0 3rem 0;
+  font-size: 2rem;
+  font-weight: 600;
+}
+.carsContainer{
+  display: flex;
+  width: 60rem;
+  align-items:center;
+  height: 30rem;
+  justify-content: space-around;
+}
+.card{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 37%;
+  height: 100%;
+  border-radius: 10px;
+  box-shadow: 5px 5px 20px -10px gray;
+  background-color: #f4f4f4;
+  overflow: hidden;
+  font-size: 0.9rem;
+}
+.thumbnail{
+  position: relative;
+  width: 100%;
+  height: 45%;
+  background-color: red; 
+}
+.extra{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 55%;
+}
+.explain1{
+  display: flex;
+  align-items:center;
+  justify-content: space-between;
+  margin: 1rem 0 0 0;
+  font-weight: 600;
+  width: 90%;
+}
+.level{
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  height:1.5rem;
+  width: 3rem;
+  border: 1px solid black;
+  border-radius: 7px;
+}
+.explain2{
+  margin: 1rem 0 0 0;
+  font-weight: 600;
+  display: flex;
+  flex-direction: column; 
+  width: 90%;
+}
+.explain2 div{
+  margin: 0 0 0.5rem 0;
+}
+.explain2 span{
+  margin: 0 0 0.5rem 0;
+}
+.plus{
+  font-size: 3rem;
+  color: gray;
+  cursor: pointer;
+}
+.X{
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
+  font-size: 1.5rem;  
+}
+.modal{
+  display:flex;
+  flex-direction: column;
+  justify-content: space-around;
+  font-size: 1.3rem;
+  height: 100%;
+}
+.modalHeader{
+  display: flex;
+}
+.icon{
+  color: #f97171;
+  font-size: 4rem;
+}
 
-  #recommand {
-    margin: 0 1rem 0 0;
-    font-size: 0.1rem;
-  }
-  .recommandOption {
-    padding: 2rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-    width: 100%;
-    background-color: white;
-    border-radius: 0 2rem 2rem 2rem;
-    box-shadow: 17px 17px 20px -10px gray;
-  }
 
-  .menu{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 15rem;
-    cursor: pointer;
-  }
-  .temp1 {
-    
-    cursor:pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 3rem;
-    padding: 0 1rem 0 1rem;
-    margin: 1rem 0.5rem;
-    font-weight: 600;
-    background-color: #f2f2f2;
-    border-radius: 10px;
-  }
-  .temp2 {
-    cursor:pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 3rem;
-    padding: 0 1rem 0 1rem;
-    margin: 1rem 0.5rem;
-    font-weight: 600;
-    background-color: #56a8ff;
-    border-radius: 10px;
-    color: white;
-  }
-  .listDetail {
-    position: relative;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 1rem 0 1rem;
-    height: 3rem;
-    width: 9rem;
-    margin: 1rem 0.5rem;
-    font-weight: 600;
-    background-color: #f2f2f2;
-    border-radius: 10px;
-    color: gray;
-  }
-
-  .toggleMenu1 {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: absolute;
-    top: 100%;
-    margin: 1rem 0 0 0;
-    width: 20rem;
-    height: 13rem;
-    left: 0;
-    background-color: #f2f2f2;
-    border-radius: 10px;
-    z-index: 2;
-  }
-  .toggleMenu2 {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: absolute;
-    top: 100%;
-    margin: 1rem 0 0 0;
-    width: 20rem;
-    height: 14rem;
-    left: 0;
-    background-color: #f2f2f2;
-    border-radius: 10px;
-    z-index: 1;
-  }
-
-  .toggleMenuContainer {
-    display: flex;
-    align-items: center;
-    padding: 0 0 0 1rem;
-    margin: 1rem 0 0 0;
-    height: 3.2rem;
-    width: 15rem;
-    background-color: white;
-    border-radius: 10px;
-    cursor: pointer;
-  }
-  .toggleMenuContainer:hover {
-    padding: 0 0 0 0.8rem;
-    border: 0.1rem solid black;
-  }
-
-  .detail {
-    display: flex;
-    align-items: center;
-    height: 3rem;
-    margin: 1rem 0.5rem;
-  }
-  .Row {
-    display: flex;
-    align-items: center;
-    width: 55rem;
-    justify-content: space-between;
-  }
-  .detailCategory1 {
-    cursor:pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 10px;
-    padding: 1rem 1.5rem;
-    background-color: #f2f2f2;
-    margin: 0.2rem;
-    font-weight: 600;
-  }
-
-  .detailCategory2 {
-    cursor:pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 10px;
-    padding: 1rem 1.5rem;
-    background-color: #56a8ff;
-    color: white;
-    margin: 0.2rem;
-    font-weight: 600;
-  }
-  #searchBtn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 2.5rem;
-    width: 5rem;
-    margin: 0 1rem 0 1rem;
-    border-radius: 10px;
-    outline: solid 2px #3499fd;
-    color: #3499fd;
-    font-weight: 600;
-  }
-
-  .popularLecture {
-    width: 100%;
-    margin: 4rem 0 0 0;
-  }
-  .popularLecture p {
-    font-size: 1.3rem;
-    font-weight: 600;
-    margin: 1rem;
-  }
-  .list {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin: 3rem;
-  }
-  .pageInfo{
-    margin: 3rem 0 0 0;
-    display:flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .curPage{
-    display: flex;
-    justify-content :center;
-    align-items: center;
-    height: 2rem;
-    width: 2rem;
-    border: 1px solid black;
-    border-radius: 50%;
-    margin: 0.5rem;
-  }
-`;
+ `;
 export default Body_main;

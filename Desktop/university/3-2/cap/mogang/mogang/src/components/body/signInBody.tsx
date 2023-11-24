@@ -17,6 +17,17 @@ function MainBody() {
   };
   const onsubmit = async () => {
     if (isCheck) {
+      const options = await axios({
+        method: "POST",
+        url: "http://15.164.0.21:4000/graphql",
+        headers: {
+          "Content-Type": "application/json",
+          "User-Agent": "insomnia/8.4.2",
+        },
+        data: '{"query":"mutation CreateUserOutputDto {createUser(createUserInput: {email:"shk9946",password:"admin", checkPassword:"admin",firstName:"hi", lastName:"ho"}) {\tok \tmessage\tuser{\t\temail\t\tid\t}},"operationName":"CreateUserOutputDto"}',
+      });
+
+      console.log(options);
       /*let token_data = await axios({
         url: "http://15.164.0.21:4000/users",
         method: "POST",

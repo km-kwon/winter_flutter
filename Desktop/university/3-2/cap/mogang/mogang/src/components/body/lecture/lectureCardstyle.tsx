@@ -6,7 +6,7 @@ const Lecture_Card = styled.div`
   .hidden {
     display: none;
   }
-  #sumbnail {
+  #tumbnail {
     height: 10rem;
     width: 100%;
     background-color: #f2f2f2;

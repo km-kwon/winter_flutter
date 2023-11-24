@@ -10,7 +10,7 @@ function LectureList() {
     const [isCheck, setIsCheck] = useState(false);
     return (
       <Lecture_Card>
-        <div id="sumbnail">
+        <div id="tumbnail">
           <FontAwesomeIcon
             onClick={() => {
               setIsCheck(!isCheck);
@@ -64,9 +64,7 @@ function LectureList() {
   return (
     <>
       <Card />
-
       <Card />
-
       <Card />
     </>
   );

@@ -1,6 +1,8 @@
 import Body_main from "./styled/mainBodyStyle";
 import LectureList from "./lecture/lectureCard";
 import { useState } from "react";
+import { useNavigate } from "react-router";
+import List from "./../../pages/list";
 
 function MainBody() {
   const [isFirstOpen, setIsFirstOpen] = useState(true);
@@ -9,11 +11,11 @@ function MainBody() {
   const [detailCategoryName, setDetailCategoryName] = useState("세부 카테고리");
   const [option, setOption] = useState(-1);
   const [free, setFree] = useState(true);
+  const navigate = useNavigate();
 
   const toggleMenu1 = () => {
     setIsFirstOpen(!isFirstOpen);
   };
-
   const toggleMenu2 = () => {
     if (categoryName === "카테고리") {
     } else {
@@ -158,7 +160,23 @@ function MainBody() {
               </div>
             </div>
           </div>
-          <div id="searchBtn">조회</div>
+          <div
+            id="searchBtn"
+            onClick={() => {
+              console.log(option, free);
+
+              navigate("/list/1", {
+                state: {
+                  categoryName: categoryName,
+                  detailCategoryName: detailCategoryName,
+                  option: option,
+                  free: free,
+                },
+              });
+            }}
+          >
+            조회
+          </div>
         </div>
       </Body_main>
     </>

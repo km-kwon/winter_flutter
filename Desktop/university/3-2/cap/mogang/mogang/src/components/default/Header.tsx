@@ -10,11 +10,12 @@ import Modal from "react-modal";
 import Dropdown from "react-multilevel-dropdown";
 import { useState } from "react";
 import styled from "styled-components";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 
 function Header() {
   const [isExtraOption, setIsExtraOption] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const PopupMessage = () => {
     const customModalStyles: ReactModal.Styles = {
@@ -29,7 +30,7 @@ function Header() {
       },
       content: {
         width: "40%",
-        height: "50%",
+        height: "60%",
         zIndex: "150",
         position: "absolute",
         top: "50%",
@@ -154,7 +155,16 @@ function Header() {
               fontWeight: "600",
             }}
           >
-            <span>5초 회원가입하기</span>
+            <span
+              onClick={() => {
+                if (window.location.pathname === "/signin") {
+                  setIsExtraOption(false);
+                }
+                navigate("/signin");
+              }}
+            >
+              5초 회원가입하기
+            </span>
           </li>
         </ul>
       </Modal>
@@ -162,7 +172,7 @@ function Header() {
   };
 
   const goToComparePage = () => {
-    navigate("/compare/1");
+    navigate("/list/1");
 
     //alert("로그인 후 이용 가능합니다.");
   };
@@ -193,7 +203,20 @@ function Header() {
                 <Dropdown.Item>
                   웹개발
                   <DropdownSubEdit>
-                    <DropdowonItemEdit>JavaScript</DropdowonItemEdit>
+                    <DropdowonItemEdit
+                      onClick={() => {
+                        navigate("/list/1", {
+                          state: {
+                            categoryName: "개발",
+                            detailCategoryName: "JavaScript",
+                            option: -1,
+                            free: true,
+                          },
+                        });
+                      }}
+                    >
+                      JavaScript
+                    </DropdowonItemEdit>
                     <DropdowonItemEdit>ReactJS</DropdowonItemEdit>
                     <DropdowonItemEdit>Html/CSS</DropdowonItemEdit>
                     <DropdowonItemEdit>Node.js</DropdowonItemEdit>
@@ -203,10 +226,15 @@ function Header() {
               </DropdownSubEdit>
             </DropdowonItemEdit>
           </DropdownEdit>
-          <li className="compare" onClick={goToComparePage}>
+          <li
+            className="compare"
+            onClick={() => {
+              navigate("/compare");
+            }}
+          >
             비교하기
           </li>
-          <li>로드맵</li>
+          <li onClick={goToComparePage}>로드맵</li>
           <li>커뮤니티</li>
         </div>
       </ul>
