@@ -196,7 +196,7 @@ const Body_main = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin: 3rem;
+    margin: 1rem 0 1rem 0;
   }
   .pageInfo{
     margin: 3rem 0 0 0;

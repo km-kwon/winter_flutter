@@ -11,11 +11,26 @@ import Dropdown from "react-multilevel-dropdown";
 import { useState } from "react";
 import styled from "styled-components";
 import { useLocation, useNavigate } from "react-router";
+import axios from "axios";
 
 function Header() {
   const [isExtraOption, setIsExtraOption] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+  let id = "";
+  let password = "";
+
+  const handleChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    index: number
+  ) => {
+    if (index === 0) {
+      id = event.target.value;
+    }
+    if (index === 1) {
+      password = event.target.value;
+    }
+  };
 
   const PopupMessage = () => {
     const customModalStyles: ReactModal.Styles = {
@@ -44,19 +59,42 @@ function Header() {
       },
     };
 
-    const Input = styled.input`
-      height: 100%;
-      width: 100%;
-      padding: 0 1rem;
-      font-size: 1.4rem;
-      border: solid 2px #b1b1b1;
-      border-radius: 15px;
-      ::placeholder {
-        color: red;
+    const login = async () => {
+      console.log(id, password);
+      const url = "http://15.164.0.21:4000/graphql";
+      try {
+        const response = await axios.post(
+          url,
+          {
+            query: `
+      mutation LoginOutput($loginInput: LoginInputDto!) {
+        login(loginInput: $loginInput) 
+        {
+          ok 
+          message
+          accessToken 
+        }
       }
-    `;
-
-    const login = () => {};
+    `,
+            variables: {
+              loginInput: {
+                email: id,
+                password: password,
+              },
+            },
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        console.log(response.data.data.login);
+        localStorage.setItem("jwt-token", response.data.data.login.accessToken);
+      } catch (error) {
+        console.error(error);
+      }
+    };
 
     return (
       <Modal
@@ -94,7 +132,20 @@ function Header() {
                 alignItems: "center",
               }}
             >
-              <Input type="text" placeholder="이메일" />
+              <input
+                style={{
+                  height: "100%",
+                  width: "100%",
+                  padding: "0 1rem",
+                  fontSize: "1.4rem",
+                  border: "solid 2px #b1b1b1",
+                  borderRadius: "15px",
+                }}
+                id="id"
+                type="text"
+                placeholder="이메일"
+                onChange={(e) => handleChange(e, 0)}
+              />
             </div>
             <div
               style={{
@@ -106,7 +157,20 @@ function Header() {
                 marginTop: "1.5rem",
               }}
             >
-              <Input type="password" placeholder="비밀번호" />
+              <input
+                style={{
+                  height: "100%",
+                  width: "100%",
+                  padding: "0 1rem",
+                  fontSize: "1.4rem",
+                  border: "solid 2px #b1b1b1",
+                  borderRadius: "15px",
+                }}
+                id="password"
+                type="password"
+                placeholder="비밀번호"
+                onChange={(e) => handleChange(e, 1)}
+              />
             </div>
             <div
               style={{

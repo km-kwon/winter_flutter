@@ -7,7 +7,8 @@ import {
   faChevronLeft,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useParams } from "react-router";
+import { useParams, useNavigate } from "react-router";
+import axios from "axios";
 
 interface props {
   option1: number;
@@ -30,9 +31,57 @@ function MainBody({
     useState(detailCategoryName1);
   const [option, setOption] = useState(option1);
   const [free1, setfree1] = useState(free);
+  const [totalPage, setTotalPage] = useState(0);
+  const navigate = useNavigate();
+  const [items, setItems] = useState([]);
+
+  const getList = async () => {
+    try {
+      const response = await axios.post(
+        "http://15.164.0.21:4000/graphql",
+        {
+          query: `
+            query GetLectureListOutputDto {
+                getLectureList(getLectureListInput: {
+                    skills: ["JavaScript"], page: ${index}, order:""
+                }) {
+                    ok
+                    message
+                    totalPage
+                    lectures {
+                        id
+                        provider
+                        title
+                        author
+                        skills
+                        lectureUpdatedAt
+                        level
+                        currentPrice
+                        duration
+                        score
+                        description
+                        thumbnailUrl
+                        url
+                    }
+                }
+            }`,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log(response.data.data);
+      setTotalPage(response.data.data.getLectureList.totalPage);
+      setItems(response.data.data.getLectureList.lectures);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   useEffect(() => {
-    //console.log(free1, option1);
+    getList();
   }, []);
 
   const toggleMenu1 = () => {
@@ -45,8 +94,9 @@ function MainBody({
       setIsSecondOpen(!isSecondOpen);
     }
   };
+
   return (
-    <>
+    items && (
       <Body_main>
         <div className="title">
           <div className="titleBox">
@@ -181,18 +231,54 @@ function MainBody({
           </div>
         </div>
         <div className="list">
-          <LectureList />
+          <LectureList item3={items.slice(0, 3)} />
+        </div>
+        <div className="list">
+          <LectureList item3={items.slice(3, 6)} />
+        </div>
+        <div className="list">
+          <LectureList item3={items.slice(6, 9)} />
         </div>
         <div className="pageInfo">
           <FontAwesomeIcon
+            className={`${Number(index) === 1 ? "hidden" : ""}`}
+            onClick={() => {
+              setTimeout(() => {
+                window.location.reload();
+              }, 100);
+              navigate(`/list/${Number(index) - 1}`, {
+                state: {
+                  categoryName: categoryName,
+                  detailCategoryName: detailCategoryName,
+                  option: option,
+                  free: free1,
+                },
+              });
+            }}
             icon={faChevronLeft}
             style={{
               fontSize: "1.5rem",
               margin: "0 1rem 0 0",
             }}
           />
-          1 ~<div className="curPage">{index}</div> ~ 30
+          <div>{Number(index) === 1 ? "" : "1 ~"}</div>
+          <div className="curPage">{index}</div>
+          <div>{Number(index) === totalPage ? "" : `~ ${totalPage}`}</div>
           <FontAwesomeIcon
+            onClick={() => {
+              setTimeout(() => {
+                window.location.reload();
+              }, 100);
+              navigate(`/list/${Number(index) + 1}`, {
+                state: {
+                  categoryName: categoryName,
+                  detailCategoryName: detailCategoryName,
+                  option: option,
+                  free: free1,
+                },
+              });
+            }}
+            className={`${Number(index) === totalPage ? "hidden" : ""}`}
             icon={faChevronRight}
             style={{
               fontSize: "1.5rem",
@@ -201,7 +287,7 @@ function MainBody({
           />
         </div>
       </Body_main>
-    </>
+    )
   );
 }
 export default MainBody;

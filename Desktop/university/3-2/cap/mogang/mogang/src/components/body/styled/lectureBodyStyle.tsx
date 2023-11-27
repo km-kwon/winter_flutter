@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const Body_main = styled.div`
+const Body_main = styled.div<{ score: number }>`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -18,11 +18,15 @@ const Body_main = styled.div`
     justify-content: center;
     background-color: #69a6f8;
   }
-  #tumbnail {
+  #tumbnailBox {
     height: 65%;
     width: 35%;
     background-color: #f2f2f2;
     position: relative;
+  }
+  #tumbnail {
+    height: 100%;
+    width: 100%;
   }
   .Like {
     position: absolute;
@@ -63,7 +67,7 @@ const Body_main = styled.div`
     overflow: hidden;
     display: flex;
     align-items: center;
-    width: 10%;
+    width: ${(props) => (props.score / 5) * 100}%;
   }
   .frameContainer {
     width: 90%;

@@ -32,7 +32,7 @@ const Body_main = styled.div`
     font-size: 1.5rem;
     height: 70%;
     width: 100%;
-    padding: 0 1rem;
+    padding: 0.5rem 1rem;
   }
   input:focus {
     outline: none;

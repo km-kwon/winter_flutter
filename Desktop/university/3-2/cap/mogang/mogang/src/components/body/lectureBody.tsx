@@ -2,26 +2,165 @@ import Body_main from "./styled/lectureBodyStyle";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart as heartSolid } from "@fortawesome/free-solid-svg-icons";
 import { faHeart as heartRegular } from "@fortawesome/free-regular-svg-icons";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Iframe from "react-iframe";
+import { useParams, useNavigate } from "react-router";
+import axios from "axios";
+import Lecture from "./../../pages/lecture";
 
 function MainBody() {
   const [isCheck, setIsCheck] = useState(false);
+  const { idx } = useParams();
+  const [lecture, setLecture] = useState({
+    title: "",
+    provider: "",
+    level: "",
+    score: 0,
+    thumbnailUrl: "",
+    url: "",
+  });
+  const navigate = useNavigate();
+
+  const getList = async () => {
+    const url = "http://15.164.0.21:4000/graphql";
+    try {
+      const response = await axios.post(
+        url,
+        {
+          query: `
+              query GetLikedLectureOutputDto{
+                  getLikedLecture{
+                      ok
+                      message
+                      likedLectures{ 
+                          id
+                         
+                      }
+                  }
+              }`,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
+          },
+        }
+      );
+      const ha = response.data.data.getLikedLecture.likedLectures;
+
+      for (let i = 0; i < ha.length; i++) {
+        if (ha[i].id === Number(idx)) {
+          //console.log("adf");
+          setIsCheck(true);
+        }
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const getLecture = async () => {
+    try {
+      const response = await axios.post(
+        "http://15.164.0.21:4000/graphql",
+        {
+          query: `
+            query GetLectureOutputDto {
+                getLecture(getLectureInput: {lectureId: ${idx}}) {
+                    lecture {
+                        id
+                        provider
+                        title
+                        author
+                        skills
+                        lectureUpdatedAt
+                        level
+                        currentPrice
+                        duration
+                        score
+                        description
+                        thumbnailUrl
+                        url
+                    }
+                }
+            }`,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      //console.log(response.data);
+      setLecture(response.data.data.getLecture.lecture);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const changeHeart = async () => {
+    const url = "http://15.164.0.21:4000/graphql";
+    try {
+      const response = await axios.post(
+        url,
+        {
+          query: `
+        mutation CreateLikeLectureOutputDto {
+            likeLecture(CreateLikeLectureInput: {lectureId: ${idx}}) {
+                ok
+                message
+                likeStatus
+            }
+        }`,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
+          },
+        }
+      );
+      //console.log(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    getLecture();
+    getList();
+  }, []);
+
+  console.log(lecture);
+
   return (
     <>
-      <Body_main>
+      <Body_main score={lecture.score}>
         <div className="info">
-          <div id="tumbnail">
+          <div id="tumbnailBox">
+            <img
+              id="tumbnail"
+              src={
+                lecture.thumbnailUrl === ""
+                  ? "   https://cdn.inflearn.com/public/courses/331392/cover/6caf16d0-df2b-40c0-b091-ad7b7b3b9045/331392-eng.png"
+                  : lecture.thumbnailUrl
+              }
+              alt=""
+            />
             <FontAwesomeIcon
               onClick={() => {
-                setIsCheck(!isCheck);
+                //빈거임
+                changeHeart();
+                setIsCheck(true);
               }}
               icon={heartRegular}
               className={`Like ${isCheck ? "hidden" : ""} `}
             />
             <FontAwesomeIcon
               onClick={() => {
-                setIsCheck(!isCheck);
+                //찬거임
+                changeHeart();
+                setIsCheck(false);
               }}
               icon={heartSolid}
               className={`Like ${isCheck ? "" : "hidden"} `}
@@ -32,28 +171,32 @@ function MainBody() {
               style={{
                 fontSize: "1.2rem",
               }}
-            >{`카테고리 > 개발> 웹개발 > JavaScript`}</li>{" "}
+            >{`카테고리 > 개발> 웹개발 `}</li>
             <li
               style={{
                 fontSize: "1.9rem",
                 fontWeight: "600",
               }}
             >
-              9시간 만에 끝내는 코드팩토리의 JAvascript 무료 풀코스
+              {lecture.title}
             </li>
             <li
               style={{
                 fontSize: "1.3rem",
               }}
             >
-              강의 사이트 : <span>인프런</span>
+              강의 사이트:{" "}
+              <span style={{ margin: "0 0 0 0.5rem" }}>
+                {`${lecture.provider}`}
+              </span>
             </li>
             <li
               style={{
                 fontSize: "1.3rem",
               }}
             >
-              난이도 : <span>입문</span>
+              난이도:{" "}
+              <span style={{ margin: "0 0 0 0.5rem" }}>{lecture.level}</span>
             </li>
             <li
               style={{
@@ -80,7 +223,7 @@ function MainBody() {
         </div>
         <div className="frameContainer">
           <Iframe
-            url="https://www.inflearn.com/course/%EC%8A%A4%ED%94%84%EB%A7%81-db-1"
+            url={lecture.url}
             width="102%"
             height="5000px"
             className=""

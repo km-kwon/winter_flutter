@@ -1,11 +1,13 @@
 import Body_main from "./styled/signInBodyStyle";
 import LectureList from "./lecture/lectureCard";
 import { useState } from "react";
+import { useNavigate } from "react-router";
 import axios from "axios";
 
 function MainBody() {
   const [form, setForm] = useState(["", "", "", "", ""]);
   const [isCheck, setIsCheck] = useState(false);
+  const navigate = useNavigate();
 
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -15,55 +17,53 @@ function MainBody() {
     copy[index] = event.target.value;
     setForm(copy);
   };
-  const onsubmit = async () => {
-    if (isCheck) {
-      const options = await axios({
-        method: "POST",
-        url: "http://15.164.0.21:4000/graphql",
-        headers: {
-          "Content-Type": "application/json",
-          "User-Agent": "insomnia/8.4.2",
+  async function onsubmit() {
+    const url = "http://15.164.0.21:4000/graphql";
+    try {
+      const response = await axios.post(
+        url,
+        {
+          query: `
+        mutation CreateUser($createUserInput: CreateUserInputDto!) {
+          createUser(createUserInput: $createUserInput) {
+            ok
+            message
+            user {
+              email
+              id
+            }
+          }
+        }
+      `,
+          variables: {
+            createUserInput: {
+              email: form[0],
+              password: form[1],
+              checkPassword: form[2],
+              firstName: form[3],
+              lastName: form[4],
+            },
+          },
         },
-        data: '{"query":"mutation CreateUserOutputDto {createUser(createUserInput: {email:"shk9946",password:"admin", checkPassword:"admin",firstName:"hi", lastName:"ho"}) {\tok \tmessage\tuser{\t\temail\t\tid\t}},"operationName":"CreateUserOutputDto"}',
-      });
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
-      console.log(options);
-      /*let token_data = await axios({
-        url: "http://15.164.0.21:4000/users",
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json", // 콘텐츠 타입 설정
-        },
-        data: {
-          email: "lanos5019@ajou.ac.kr",
-          checkPassword: "admin",
-          password: "admin",
-          firstName: "seoho",
-          lastName: "kim",
-        },
-      });
-      console.log(token_data);*/
-    } else {
-      alert("동의항목에 체크해주세요!");
+      console.log(response.data);
+      if (!response.data.data.createUser.ok) {
+        alert("오류가 발생했습니다.");
+      } else {
+        alert("회원가입이 완료되었습니다.");
+      }
+      navigate("/");
+    } catch (error) {
+      console.error(error);
     }
-  };
+  }
 
-  /*
-  const test2 = async () => {
-    let token_data = await axios({
-      url: "http://15.164.0.21:4000/auth/login",
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json", // 콘텐츠 타입 설정
-      },
-      data: {
-        email: "lanos5019@ajou.ac.kr",
-        password: "admin",
-      },
-    });
-    console.log(token_data);
-  };
-*/
   return (
     <Body_main>
       <ul>
