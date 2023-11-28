@@ -38,7 +38,7 @@ function MainBody({
   const getList = async () => {
     try {
       const response = await axios.post(
-        "http://15.164.0.21:4000/graphql",
+        "http://27.119.53.12:4000/graphql",
         {
           query: `
             query GetLectureListOutputDto {

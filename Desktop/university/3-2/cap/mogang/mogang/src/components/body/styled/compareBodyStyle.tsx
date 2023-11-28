@@ -51,11 +51,15 @@ const Body_main = styled.div`
   overflow: hidden;
   font-size: 0.9rem;
 }
-.thumbnail{
+#tumbnailBox{
   position: relative;
   width: 100%;
-  height: 45%;
+  height: 60%;
   background-color: red; 
+}
+#tumbnail{
+  width: 100%;
+  height: 100%;
 }
 .extra{
   display: flex;
@@ -70,6 +74,7 @@ const Body_main = styled.div`
   justify-content: space-between;
   margin: 1rem 0 0 0;
   font-weight: 600;
+  
   width: 90%;
 }
 .level{

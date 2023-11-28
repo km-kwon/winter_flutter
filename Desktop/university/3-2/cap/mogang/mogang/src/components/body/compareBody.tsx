@@ -1,7 +1,7 @@
 import Body_main from "./styled/compareBodyStyle";
 import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useParams } from "react-router";
+import { useParams, useNavigate } from "react-router";
 import { faCirclePlus, faX, faXmark } from "@fortawesome/free-solid-svg-icons";
 import Modal from "react-modal";
 import { faHeart as heartSolid } from "@fortawesome/free-solid-svg-icons";
@@ -12,16 +12,23 @@ function MainBody() {
   const [checkDeleteOption1, setCheckDeleteOption1] = useState(false);
   const [checkDeleteOption2, setCheckDeleteOption2] = useState(false);
 
+  const navigate = useNavigate();
   const [item1, setItem1] = useState({
     title: "",
+    skills: [],
+    currentPrice: 0,
+    thumbnailUrl: "",
   });
   const [item2, setItem2] = useState({
     title: "",
+    skills: [],
+    currentPrice: 0,
+    thumbnailUrl: "",
   });
   const [likeLectures, setlikeLectures] = useState([]);
 
   const getList = async () => {
-    const url = "http://15.164.0.21:4000/graphql";
+    const url = "http://27.119.53.12:4000/graphql";
     try {
       const response = await axios.post(
         url,
@@ -57,6 +64,9 @@ function MainBody() {
         }
       );
       setlikeLectures(response.data.data.getLikedLecture.likedLectures);
+      if (response.data.data.getLikedLecture.likedLectures.length === 0) {
+        alert("찜한 강의가 없습니다!");
+      }
       console.log(response.data);
     } catch (error) {
       console.error(error);
@@ -98,7 +108,7 @@ function MainBody() {
     const getLecture = async (idx: number) => {
       try {
         const response = await axios.post(
-          "http://15.164.0.21:4000/graphql",
+          "http://27.119.53.12:4000/graphql",
           {
             query: `
               query GetLectureOutputDto {
@@ -236,14 +246,44 @@ function MainBody() {
                 );
               })}
             </div>
-            <span
-              onClick={async () => {
-                setCheckDeleteOption1(false);
-                await getLecture(Number(idx1));
+            <div
+              style={{
+                margin: "auto 0 1rem 0",
+                width: "100%",
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
               }}
             >
-              asdf
-            </span>
+              <span
+                onClick={async () => {
+                  navigate(`/lecture/${Number(idx1)}`);
+                }}
+                style={{
+                  backgroundColor: "#3499fd",
+                  color: "white",
+                  padding: "0.5rem",
+                  borderRadius: "10px",
+                  margin: "0 0 0 1rem",
+                }}
+              >
+                이동하기
+              </span>
+              <span
+                onClick={async () => {
+                  setCheckDeleteOption1(false);
+                  await getLecture(Number(idx1));
+                }}
+                style={{
+                  backgroundColor: "#3499fd",
+                  color: "white",
+                  padding: "0.5rem",
+                  borderRadius: "10px",
+                }}
+              >
+                확인
+              </span>
+            </div>
           </div>
         </Modal>
       )
@@ -280,7 +320,7 @@ function MainBody() {
     const getLecture = async (idx: number) => {
       try {
         const response = await axios.post(
-          "http://15.164.0.21:4000/graphql",
+          "http://27.119.53.12:4000/graphql",
           {
             query: `
               query GetLectureOutputDto {
@@ -417,15 +457,42 @@ function MainBody() {
                   </div>
                 );
               })}
-            </div>{" "}
-            <span
-              onClick={async () => {
-                setCheckDeleteOption2(false);
-                await getLecture(Number(idx2));
+            </div>
+            <div
+              style={{
+                margin: "auto 0 1rem 0",
+                width: "100%",
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
               }}
             >
-              asdf
-            </span>
+              <span
+                style={{
+                  backgroundColor: "#3499fd",
+                  color: "white",
+                  padding: "0.5rem",
+                  borderRadius: "10px",
+                  margin: "0 0 0 1rem",
+                }}
+              >
+                이동하기
+              </span>
+              <span
+                onClick={async () => {
+                  setCheckDeleteOption2(false);
+                  await getLecture(Number(idx2));
+                }}
+                style={{
+                  backgroundColor: "#3499fd",
+                  color: "white",
+                  padding: "0.5rem",
+                  borderRadius: "10px",
+                }}
+              >
+                확인
+              </span>
+            </div>
           </div>
         </Modal>
       )
@@ -459,12 +526,26 @@ function MainBody() {
 
         <div className="carsContainer">
           <div className={item1.title === "" ? "hidden" : "card"}>
-            <div className="thumbnail">
+            <div id="tumbnailBox">
+              <img
+                id="tumbnail"
+                src={
+                  item1.thumbnailUrl === ""
+                    ? "   https://cdn.inflearn.com/public/courses/331392/cover/6caf16d0-df2b-40c0-b091-ad7b7b3b9045/331392-eng.png"
+                    : item1.thumbnailUrl
+                }
+                alt=""
+              />
               <FontAwesomeIcon
                 icon={faXmark}
                 className="X"
                 onClick={() => {
-                  setItem1({ title: "" });
+                  setItem1({
+                    title: "",
+                    skills: [],
+                    currentPrice: 0,
+                    thumbnailUrl: "",
+                  });
                 }}
               />
             </div>
@@ -474,24 +555,37 @@ function MainBody() {
                   <span>강의명: </span>
                   <span>{item1.title}</span>
                 </div>
-                <span className="level">입문</span>
+                <span className=""></span>
               </div>
               <div className="explain1">
                 <div>
                   <span>키워드: </span>
-                  <span>{item1.title}</span>
+                  <span>
+                    {item1.skills.map((item, idx) => {
+                      if (idx < 2) {
+                        return (
+                          <span style={{ margin: "0 0.5rem 0 0" }}>{item}</span>
+                        );
+                      }
+                    })}
+                  </span>
                 </div>
               </div>
               <div className="explain1">
                 <div>
                   <span>가격: </span>
-                  <span>{item1.title}</span>
+                  <span>
+                    {" "}
+                    {item1.currentPrice !== 0
+                      ? "₩ " + item1.currentPrice
+                      : "무료"}
+                  </span>
                 </div>
               </div>
               <div className="explain2">
                 <div>요구사항</div>
-                <span>{item1.title}</span>
-                <span>{item1.title}</span>
+                <span>- 사전 JavaScript관련 지식은 필요하지 않습니다.</span>
+                <span>- 기본 웹 개발 지식이 있으면 도움이 됩니다.</span>
               </div>
             </div>
           </div>
@@ -506,12 +600,26 @@ function MainBody() {
           </div>
 
           <div className={item2.title === "" ? "hidden" : "card"}>
-            <div className="thumbnail">
+            <div id="tumbnailBox">
+              <img
+                id="tumbnail"
+                src={
+                  item2.thumbnailUrl === ""
+                    ? "   https://cdn.inflearn.com/public/courses/331392/cover/6caf16d0-df2b-40c0-b091-ad7b7b3b9045/331392-eng.png"
+                    : item2.thumbnailUrl
+                }
+                alt=""
+              />
               <FontAwesomeIcon
                 icon={faXmark}
                 className="X"
                 onClick={() => {
-                  setItem2({ title: "" });
+                  setItem2({
+                    title: "",
+                    skills: [],
+                    currentPrice: 0,
+                    thumbnailUrl: "",
+                  });
                 }}
               />
             </div>
@@ -521,24 +629,37 @@ function MainBody() {
                   <span>강의명: </span>
                   <span>{item2.title}</span>
                 </div>
-                <span className="level">입문</span>
+                <span className=""> </span>
               </div>
               <div className="explain1">
                 <div>
                   <span>키워드: </span>
-                  <span>{item2.title}</span>
+                  <span>
+                    {item2.skills.map((item, idx) => {
+                      if (idx < 2) {
+                        return (
+                          <span style={{ margin: "0 0.5rem 0 0" }}>{item}</span>
+                        );
+                      }
+                    })}
+                  </span>
                 </div>
               </div>
               <div className="explain1">
                 <div>
                   <span>가격: </span>
-                  <span>{item2.title}</span>
+                  <span>
+                    {" "}
+                    {item2.currentPrice !== 0
+                      ? "₩ " + item2.currentPrice
+                      : "무료"}
+                  </span>
                 </div>
               </div>
               <div className="explain2">
                 <div>요구사항</div>
-                <span>{item2.title}</span>
-                <span>{item2.title}</span>
+                <span>- 사전 JavaScript관련 지식은 필요하지 않습니다.</span>
+                <span>- 기본 웹 개발 지식이 있으면 도움이 됩니다.</span>
               </div>
             </div>
           </div>

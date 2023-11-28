@@ -18,49 +18,53 @@ function MainBody() {
     setForm(copy);
   };
   async function onsubmit() {
-    const url = "http://15.164.0.21:4000/graphql";
-    try {
-      const response = await axios.post(
-        url,
-        {
-          query: `
-        mutation CreateUser($createUserInput: CreateUserInputDto!) {
-          createUser(createUserInput: $createUserInput) {
-            ok
-            message
-            user {
-              email
-              id
+    if (isCheck) {
+      const url = "http://27.119.53.12:4000/graphql";
+      try {
+        const response = await axios.post(
+          url,
+          {
+            query: `
+          mutation CreateUser($createUserInput: CreateUserInputDto!) {
+            createUser(createUserInput: $createUserInput) {
+              ok
+              message
+              user {
+                email
+                id
+              }
             }
           }
-        }
-      `,
-          variables: {
-            createUserInput: {
-              email: form[0],
-              password: form[1],
-              checkPassword: form[2],
-              firstName: form[3],
-              lastName: form[4],
+        `,
+            variables: {
+              createUserInput: {
+                email: form[0],
+                password: form[1],
+                checkPassword: form[2],
+                firstName: form[3],
+                lastName: form[4],
+              },
             },
           },
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
 
-      console.log(response.data);
-      if (!response.data.data.createUser.ok) {
-        alert("오류가 발생했습니다.");
-      } else {
-        alert("회원가입이 완료되었습니다.");
+        console.log(response.data);
+        if (!response.data.data.createUser.ok) {
+          alert("오류가 발생했습니다.");
+        } else {
+          alert("회원가입이 완료되었습니다.");
+        }
+        navigate("/");
+      } catch (error) {
+        console.error(error);
       }
-      navigate("/");
-    } catch (error) {
-      console.error(error);
+    } else {
+      alert("개인정보 동의를 안하셨습니다.");
     }
   }
 
@@ -112,7 +116,6 @@ function MainBody() {
           <input
             type="checkbox"
             onChange={(e) => {
-              console.log(isCheck);
               setIsCheck(!isCheck);
             }}
           />

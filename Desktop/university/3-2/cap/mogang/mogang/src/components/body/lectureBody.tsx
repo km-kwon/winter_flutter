@@ -22,7 +22,7 @@ function MainBody() {
   const navigate = useNavigate();
 
   const getList = async () => {
-    const url = "http://15.164.0.21:4000/graphql";
+    const url = "http://27.119.53.12:4000/graphql";
     try {
       const response = await axios.post(
         url,
@@ -61,7 +61,7 @@ function MainBody() {
   const getLecture = async () => {
     try {
       const response = await axios.post(
-        "http://15.164.0.21:4000/graphql",
+        "http://27.119.53.12:4000/graphql",
         {
           query: `
             query GetLectureOutputDto {
@@ -99,7 +99,7 @@ function MainBody() {
   };
 
   const changeHeart = async () => {
-    const url = "http://15.164.0.21:4000/graphql";
+    const url = "http://27.119.53.12:4000/graphql";
     try {
       const response = await axios.post(
         url,

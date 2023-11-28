@@ -28,7 +28,7 @@ function LectureList({ item3 }: props) {
   const navigate = useNavigate();
 
   const getList = async () => {
-    const url = "http://15.164.0.21:4000/graphql";
+    const url = "http://27.119.53.12:4000/graphql";
     try {
       const response = await axios.post(
         url,
@@ -68,7 +68,7 @@ function LectureList({ item3 }: props) {
     const [isCheck, setIsCheck] = useState(false);
 
     const changeHeart = async () => {
-      const url = "http://15.164.0.21:4000/graphql";
+      const url = "http://27.119.53.12:4000/graphql";
       try {
         const response = await axios.post(
           url,

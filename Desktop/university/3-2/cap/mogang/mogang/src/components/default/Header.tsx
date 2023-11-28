@@ -61,7 +61,7 @@ function Header() {
 
     const login = async () => {
       console.log(id, password);
-      const url = "http://15.164.0.21:4000/graphql";
+      const url = "http://27.119.53.12:4000/graphql";
       try {
         const response = await axios.post(
           url,
@@ -91,6 +91,8 @@ function Header() {
         );
         console.log(response.data.data.login);
         localStorage.setItem("jwt-token", response.data.data.login.accessToken);
+        navigate("/");
+        window.location.reload();
       } catch (error) {
         console.error(error);
       }
@@ -115,10 +117,10 @@ function Header() {
           <li>
             <img
               style={{
-                margin: "2rem",
+                margin: "2rem 2rem 1.8rem 2rem",
               }}
               className="textImg"
-              src="img/mogangtext.png"
+              src={`${process.env.PUBLIC_URL}/img/mogangtext.png`}
               alt="모강"
             />
           </li>
@@ -293,17 +295,21 @@ function Header() {
           <li
             className="compare"
             onClick={() => {
-              navigate("/compare");
+              if (localStorage.getItem("jwt-token") === null) {
+                alert("로그인을 해주세요!");
+              } else {
+                navigate("/compare");
+              }
             }}
           >
             비교하기
           </li>
-          <li onClick={goToComparePage}>로드맵</li>
+          <li>로드맵</li>
           <li>커뮤니티</li>
         </div>
       </ul>
       <ul className="topRight">
-        <li>
+        <li className="hidden">
           <div className="searchBar">
             <input type="text" placeholder="강의를 검색해주세요" />
             <FontAwesomeIcon icon={faSearch} />
@@ -311,7 +317,9 @@ function Header() {
         </li>
         <li>
           <div
-            className="loginBtn"
+            className={
+              localStorage.getItem("jwt-token") === null ? "loginBtn" : "hidden"
+            }
             onClick={() => {
               setIsExtraOption(true);
             }}
@@ -322,12 +330,28 @@ function Header() {
         </li>
         <li>
           <div
-            className="signBtn"
+            className={
+              localStorage.getItem("jwt-token") === null ? "signBtn" : "hidden"
+            }
             onClick={() => {
               navigate("/signin");
             }}
           >
             회원가입
+          </div>
+        </li>
+        <li>
+          <div
+            className={
+              localStorage.getItem("jwt-token") === null ? "hidden" : "signBtn"
+            }
+            onClick={() => {
+              localStorage.removeItem("jwt-token");
+              navigate("/");
+              window.location.reload();
+            }}
+          >
+            로그아웃
           </div>
         </li>
       </ul>

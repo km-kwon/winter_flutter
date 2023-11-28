@@ -7,6 +7,9 @@ export const HeaderMain = styled.div`
   justify-content: space-between;
   margin: 2rem 1rem 1rem 1rem;
 
+  .hidden {
+    display: none;
+  }
   ul {
     display: flex;
     list-style: none;
